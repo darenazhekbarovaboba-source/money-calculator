@@ -10,8 +10,14 @@
     return n.toFixed(digits) + "%";
   }
 
+  function rawValue(id) {
+    return document.getElementById(id).value.trim();
+  }
+
   function num(id) {
-    var n = Number(document.getElementById(id).value);
+    var raw = rawValue(id);
+    if (raw === "") return NaN;
+    var n = Number(raw);
     return Number.isFinite(n) ? n : NaN;
   }
 
