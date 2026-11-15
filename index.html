@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Profit margin, tip splitter, and discount calculators in one place. Runs in your browser with no account.">
+  <meta name="theme-color" content="#f3f4f6">
+  <title>Money Calculator</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%234b5563'/%3E%3Ctext x='16' y='22' text-anchor='middle' font-size='12' font-family='system-ui,sans-serif' font-weight='700' fill='%23f9fafb'%3EMC%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="./">
+        <span class="brand-mark" aria-hidden="true">MC</span>
+        <span class="brand-name">Money Calculator</span>
+      </a>
+      <span class="header-note">Saved in this browser</span>
+    </div>
+  </header>
+
+  <main id="main">
+    <h1 class="page-title">Money Calculator</h1>
+    <p class="lede">Three everyday calculators in one page: profit margin and markup, tip and split bill, and sale price. Your last numbers are remembered on this device.</p>
+
+    <div class="tablist" role="tablist" aria-label="Calculators">
+      <button type="button" role="tab" id="tab-margin" aria-controls="panel-margin" aria-selected="true">Profit &amp; markup</button>
+      <button type="button" role="tab" id="tab-tip" aria-controls="panel-tip" aria-selected="false" tabindex="-1">Tip &amp; split</button>
+      <button type="button" role="tab" id="tab-discount" aria-controls="panel-discount" aria-selected="false" tabindex="-1">Discount</button>
+    </div>
+
+    <section class="panel tab-panel" role="tabpanel" id="panel-margin" aria-labelledby="tab-margin">
+      <h2>Profit margin and markup</h2>
+      <div class="calc-layout">
+        <form id="margin-form" class="stack" onsubmit="return false;">
+          <div>
+            <label for="cost">Cost</label>
+            <input id="cost" type="number" inputmode="decimal" min="0" step="0.01" value="40" required>
+          </div>
+          <div>
+            <label for="price">Selling price</label>
+            <input id="price" type="number" inputmode="decimal" min="0" step="0.01" value="65" required>
+          </div>
+          <p class="hint">Margin is profit as a share of the selling price. Markup is profit as a share of cost.</p>
+          <div>
+            <label for="target-margin">Find price from a target margin %</label>
+            <input id="target-margin" type="number" inputmode="decimal" step="0.01" placeholder="e.g. 40">
+          </div>
+          <div>
+            <label for="target-markup">Find price from a target markup %</label>
+            <input id="target-markup" type="number" inputmode="decimal" step="0.01" placeholder="e.g. 50">
+          </div>
+        </form>
+        <div class="result-card">
+          <h3>Results</h3>
+          <dl>
+            <div class="result-row">
+              <dt>Profit</dt>
+              <dd id="out-profit">$0.00</dd>
+            </div>
+            <div class="result-row emphasis">
+              <dt>Margin</dt>
+              <dd id="out-margin">0%</dd>
+            </div>
+            <div class="result-row emphasis">
+              <dt>Markup</dt>
+              <dd id="out-markup">0%</dd>
+            </div>
+            <div class="result-row">
+              <dt>Price for target margin</dt>
+              <dd id="out-price-margin">—</dd>
+            </div>
+            <div class="result-row">
+              <dt>Price for target markup</dt>
+              <dd id="out-price-markup">—</dd>
+            </div>
+          </dl>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel tab-panel" role="tabpanel" id="panel-tip" aria-labelledby="tab-tip" hidden>
+      <h2>Tip and split bill</h2>
+      <div class="calc-layout">
+        <form id="tip-form" class="stack" onsubmit="return false;">
+          <div>
+            <label for="bill">Bill amount</label>
+            <input id="bill" type="number" inputmode="decimal" min="0" step="0.01" value="86.40" required>
+          </div>
+          <div>
+            <label for="tip-percent">Tip percent</label>
+            <div class="preset-row" role="group" aria-label="Tip presets">
+              <button type="button" class="btn btn-small tip-preset" data-tip="15">15%</button>
+              <button type="button" class="btn btn-small tip-preset" data-tip="18">18%</button>
+              <button type="button" class="btn btn-small tip-preset" data-tip="20" aria-pressed="true">20%</button>
+              <button type="button" class="btn btn-small tip-preset" data-tip="25">25%</button>
+            </div>
+            <input id="tip-percent" type="number" inputmode="decimal" min="0" step="0.1" value="20" style="margin-top:0.55rem">
+          </div>
+          <div>
+            <label for="people">Number of people</label>
+            <input id="people" type="number" inputmode="numeric" min="1" step="1" value="3" required>
+          </div>
+          <label class="split-toggle">
+            <input id="round-up" type="checkbox">
+            Round up each person’s share to the next dollar
+          </label>
+        </form>
+        <div class="result-card">
+          <h3>Results</h3>
+          <dl>
+            <div class="result-row">
+              <dt>Tip</dt>
+              <dd id="out-tip">$0.00</dd>
+            </div>
+            <div class="result-row emphasis">
+              <dt>Total with tip</dt>
+              <dd id="out-total">$0.00</dd>
+            </div>
+            <div class="result-row">
+              <dt>Tip per person</dt>
+              <dd id="out-tip-each">$0.00</dd>
+            </div>
+            <div class="result-row emphasis">
+              <dt>Each person pays</dt>
+              <dd id="out-each">$0.00</dd>
+            </div>
+          </dl>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel tab-panel" role="tabpanel" id="panel-discount" aria-labelledby="tab-discount" hidden>
+      <h2>Discount and sale price</h2>
+      <div class="calc-layout">
+        <form id="discount-form" class="stack" onsubmit="return false;">
+          <div>
+            <label for="original">Original price</label>
+            <input id="original" type="number" inputmode="decimal" min="0" step="0.01" value="120" required>
+          </div>
+          <div>
+            <span class="field-label" id="discount-type-label">Discount type</span>
+            <div class="segmented" role="group" aria-labelledby="discount-type-label">
+              <button type="button" id="dtype-percent" aria-pressed="true">Percent off</button>
+              <button type="button" id="dtype-amount">Amount off</button>
+            </div>
+          </div>
+          <div>
+            <label for="discount-value" id="discount-value-label">Percent off</label>
+            <input id="discount-value" type="number" inputmode="decimal" min="0" step="0.01" value="20">
+          </div>
+        </form>
+        <div class="result-card">
+          <h3>Results</h3>
+          <dl>
+            <div class="result-row">
+              <dt>You save</dt>
+              <dd id="out-save">$0.00</dd>
+            </div>
+            <div class="result-row emphasis">
+              <dt>Sale price</dt>
+              <dd id="out-sale">$0.00</dd>
+            </div>
+            <div class="result-row">
+              <dt>Effective percent off</dt>
+              <dd id="out-effective">0%</dd>
+            </div>
+          </dl>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>Numbers are rounded to the nearest cent. Last inputs are stored only in this browser.</p>
+  </footer>
+  <script src="app.js"></script>
+</body>
+</html>
